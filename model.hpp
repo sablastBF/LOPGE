@@ -78,7 +78,7 @@ private:
         min_vec.z = meshes[0].vertices[0].Position.z;
 
         for (int i = 0; i < meshes.size(); i++){
-            for(unsigned int j = 0; j <meshes[i].vertices.size(); j++){
+            for(int j = 0; j <meshes[i].vertices.size(); j++){
                 max_vec.x = max(meshes[i].vertices[j].Position.x, max_vec.x);
                 max_vec.y = max(meshes[i].vertices[j].Position.y, max_vec.y);
                 max_vec.z = max(meshes[i].vertices[j].Position.z, max_vec.z);
@@ -88,12 +88,13 @@ private:
                 min_vec.z = min(meshes[i].vertices[j].Position.z,  min_vec.z);
             }
         }
-        glm::vec3 duz;
-        duz = max_vec - min_vec;
-      
+        glm::vec3 duz = max_vec - min_vec;
+        int k = std::max({duz.x, duz.y, duz.z});
+        glm::vec3 v = glm::vec3(k);
+
         for (int i = 0; i < meshes.size(); i++){
-            for(unsigned int j = 0; j < meshes[i].vertices.size(); j++){
-                meshes[i].vertices[j].Position =  glm::vec3(2)*( meshes[i].vertices[j].Position - min_vec)/duz - glm::vec3(1);
+            for( int j = 0; j < meshes[i].vertices.size(); j++){
+                meshes[i].vertices[j].Position = 2.0f * ( meshes[i].vertices[j].Position - min_vec)/v - glm::vec3(1);
             }
              meshes[i].setupMesh();
         }

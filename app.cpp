@@ -66,9 +66,16 @@ namespace logle{
     ourShader.setMat4("model", transform);
     // render loop
     // -----------
-    glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);  
+    glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 1.0f); 
+    glm::vec3 light = glm::vec3(0.0f, 0.0f, 3.0f);
+    glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
+    glm::vec3 objectColor = glm::vec3(0.5f, 0.5f, 0.5f);
 
-    Model *mod = new Model("models/medo.obj");
+    ourShader.setVec3("lightPos", light);
+    ourShader.setVec3("lightColor", lightColor);
+    ourShader.setVec3("objectColor", objectColor);
+
+    Model *mod = new Model("models/medo2.obj");
     mod->set_shader(ourShader);
 
     while (!glfwWindowShouldClose(window -> window)){
@@ -80,7 +87,9 @@ namespace logle{
         glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-        ourShader.use();  
+        ourShader.use();
+        mod->model = glm::rotate(mod->model, glm::radians(1.0f), glm::vec3(1.0, 0.0, 0.0));;  
+        ourShader.setVec3("viewPos", camera.Position);
         ourShader.setMat4("model", transform);
         ourShader.setMat4("transform", transform);
 
