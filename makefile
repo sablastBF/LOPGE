@@ -1,5 +1,5 @@
 CFLAGS = -std=c++17 -I. -I include
-LDFLAGS = -ldl -lglfw
+LDFLAGS = -ldl -lglfw -lassimp
 
 a.out: shaders/* *.hpp *.c *.cpp 
 	g++ $(CFLAGS) -o a.out *.c *.cpp $(LDFLAGS)
