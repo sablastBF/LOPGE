@@ -29,22 +29,43 @@ public:
     vector<Mesh> meshes;
     string directory;
     bool gammaCorrection;
+    Shader sh;
+    glm::mat4 model = glm::mat4(1.0f);
 
     // constructor, expects a filepath to a 3D model.
-    Model(string const &path, bool gamma = false) : gammaCorrection(gamma)
+    Model(string const &path,bool gamma = false) : gammaCorrection(gamma)
     {
         loadModel(path);
-        std::cout << meshes.size() << std::endl;
         normalize();
     }
 
-    // draws the model, and thus all its meshes
-    void Draw(Shader &shader)
-    { 
-        for(unsigned int i = 0; i < meshes.size(); i++)
-            meshes[i].Draw(shader);
+    Model(string const &path, Shader sh,bool gamma = false) : gammaCorrection(gamma)
+    {
+        set_shader(sh);
+        loadModel(path);
+        normalize();
     }
-    
+
+   
+
+    // draws the model, and thus all its meshes
+    void setModel(glm::mat4 mat){
+        model = mat;
+    }
+
+    void Draw( GLenum tip = GL_TRIANGLES)
+    {   sh.use();
+        sh.setMat4("model",model);
+
+        for(unsigned int i = 0; i < meshes.size(); i++)
+            meshes[i].Draw(sh, tip);
+    }
+
+    void set_shader(Shader s){
+        sh = s;
+    }
+
+
 private:
     void normalize(){
         glm::vec3 max_vec, min_vec;

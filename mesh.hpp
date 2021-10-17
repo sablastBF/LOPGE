@@ -27,23 +27,18 @@ public:
     vector<Vertex>       vertices;
     vector<unsigned int> indices;
     unsigned int VAO;
-
     // constructor
     Mesh(vector<Vertex> vertices, vector<unsigned int> indices)
     {
         this->vertices = vertices;
         this->indices = indices;
-
-        // now that we have all the required data, set the vertex buffers and its attribute pointers.
-        setupMesh();
     }
 
     // render the mesh
-    void Draw(Shader &shader) 
+    void Draw(Shader &shader, GLenum tip = GL_TRIANGLES) 
     {
-        
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+        glDrawElements(tip, indices.size(), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
 
         // always good practice to set everything back to defaults once configured.

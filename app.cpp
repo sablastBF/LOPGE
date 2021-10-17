@@ -68,7 +68,8 @@ namespace logle{
     // -----------
     glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);  
 
-    Model *mod = new Model("models/medo2.obj");
+    Model *mod = new Model("models/medo.obj");
+    mod->set_shader(ourShader);
 
     while (!glfwWindowShouldClose(window -> window)){
         float currentFrame = glfwGetTime();
@@ -76,10 +77,9 @@ namespace logle{
         lastFrame = currentFrame;
 
         processInput(window -> window);
-        glClearColor(1.0f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        
-
+    
         ourShader.use();  
         ourShader.setMat4("model", transform);
         ourShader.setMat4("transform", transform);
@@ -90,9 +90,7 @@ namespace logle{
         // camera/view transformation
         glm::mat4 view = camera.GetViewMatrix();
         ourShader.setMat4("view", view);
-
-        mod->Draw(ourShader);
-
+        mod->Draw();
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
         glfwSwapBuffers(window -> window);
