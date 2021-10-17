@@ -1,8 +1,8 @@
 CFLAGS = -std=c++17 -I. -I include
 LDFLAGS = -ldl -lglfw
 
-a.out: *.c *.cpp 
-	g++ $(CFLAGS) -o a.out *.cpp $(LDFLAGS)
+a.out: *.hpp *.c *.cpp 
+	g++ $(CFLAGS) -o a.out *.c *.cpp $(LDFLAGS)
 
 
 .PHONY: test clean
