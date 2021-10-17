@@ -1,2 +1,5 @@
 # LOPGE
-Litlle openg GL engine
+Litlle opengGL engine
+
+
+1. 
