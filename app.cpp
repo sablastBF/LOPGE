@@ -68,7 +68,7 @@ namespace logle{
     // -----------
     glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);  
 
-    Model *mod = new Model("models/medo.obj");
+    Model *mod = new Model("models/medo2.obj");
 
     while (!glfwWindowShouldClose(window -> window)){
         float currentFrame = glfwGetTime();
@@ -98,7 +98,6 @@ namespace logle{
         glfwSwapBuffers(window -> window);
         glfwPollEvents();
     }
-
     
     glfwTerminate();
     }
