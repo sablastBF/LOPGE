@@ -18,5 +18,5 @@ namespace logle{
         this -> window = glfwCreateWindow(width, height, windowName.c_str(), NULL, NULL);
         glfwSetFramebufferSizeCallback( window, framebuffer_size_callback);
     }
-
+    
 }
