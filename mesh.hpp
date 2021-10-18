@@ -28,6 +28,11 @@ public:
     vector<unsigned int> indices;
     unsigned int VAO;
     // constructor
+
+    Mesh(){
+
+    }
+
     Mesh(vector<Vertex> vertices, vector<unsigned int> indices)
     {
         this->vertices = vertices;
@@ -43,6 +48,21 @@ public:
 
         // always good practice to set everything back to defaults once configured.
         glActiveTexture(GL_TEXTURE0);
+    }
+
+    void addDots(std::vector<glm::vec3> &v){
+        for (int i = 0; i < (int)v.size(); i++){
+            Vertex dot{};
+            dot.Position.x = v[i].x;
+            dot.Position.y = v[i].y;
+            dot.Position.z = v[i].z;
+            dot.Normal = glm::vec3(0);
+
+            vertices.push_back(dot);
+            indices.push_back(i);
+        }
+
+        setupMesh();
     }
 
 

@@ -33,21 +33,30 @@ public:
     glm::mat4 model = glm::mat4(1.0f);
 
     // constructor, expects a filepath to a 3D model.
-    Model(string const &path,bool gamma = false) : gammaCorrection(gamma)
-    {
+    Model(){
+        Mesh m{};
+        meshes.push_back(m);
+    }
+
+    Model(Shader sh) : gammaCorrection(gamma){
+        setShader(sh);
+    }
+
+    Model(string const &path,bool gamma = false) : gammaCorrection(gamma){
         loadModel(path);
         normalize();
     }
 
-    Model(string const &path, Shader sh,bool gamma = false) : gammaCorrection(gamma)
-    {
-        set_shader(sh);
+    Model(string const &path, Shader sh,bool gamma = false) : gammaCorrection(gamma){
+        setShader(sh);
         loadModel(path);
         normalize();
     }
 
+    void addDot(vector<glm::vec3> &v){
+        meshes[0].addDots(v);
+    }
    
-
     // draws the model, and thus all its meshes
     void setModel(glm::mat4 mat){
         model = mat;
@@ -56,12 +65,11 @@ public:
     void Draw( GLenum tip = GL_TRIANGLES)
     {   sh.use();
         sh.setMat4("model",model);
-
         for(unsigned int i = 0; i < meshes.size(); i++)
             meshes[i].Draw(sh, tip);
     }
 
-    void set_shader(Shader s){
+    void setShader(Shader s){
         sh = s;
     }
 
