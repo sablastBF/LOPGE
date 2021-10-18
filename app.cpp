@@ -43,11 +43,12 @@ namespace logle{
     App::~App(){ glfwTerminate();}
 
     void App::run() {
+        
         window = new Window(800, 600, "Prvi program");
         glfwMakeContextCurrent(window -> window);
         gladLoadGL(); 
 
-        Shader ourShader("shaders/shader.vert", "shaders/shader.frag");
+      
         glfwSetFramebufferSizeCallback(window -> window, framebuffer_size_callback);
         glfwSetCursorPosCallback(window -> window, mouse_callback);
         glfwSetScrollCallback(window -> window, scroll_callback);
@@ -58,25 +59,34 @@ namespace logle{
 
 
 
-    // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-    // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
-    // glBindVertexArray(0);
-    glm::mat4 transform = glm::mat4(1.0f);
-    ourShader.use();
-    ourShader.setMat4("model", transform);
-    // render loop
-    // -----------
-    glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 1.0f); 
-    glm::vec3 light = glm::vec3(0.0f, 0.0f, 3.0f);
-    glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
-    glm::vec3 objectColor = glm::vec3(0.5f, 0.5f, 0.5f);
+    Shader ourShader("shaders/shader.vert", "shaders/shader.frag");
+        glm::mat4 transform = glm::mat4(1.0f);
+        ourShader.use();
+        ourShader.setMat4("model", transform);
+        // render loop
+        // -----------
+        glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 1.0f); 
+        glm::vec3 light = glm::vec3(0.0f, 0.0f, 3.0f);
+        glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
+        glm::vec3 objectColor = glm::vec3(0.5f, 0.5f, 0.5f);
 
-    ourShader.setVec3("lightPos", light);
-    ourShader.setVec3("lightColor", lightColor);
-    ourShader.setVec3("objectColor", objectColor);
+        ourShader.setVec3("lightPos", light);
+        ourShader.setVec3("lightColor", lightColor);
+        ourShader.setVec3("objectColor", objectColor);
 
-    Model *mod = new Model("models/medo2.obj");
-    mod->set_shader(ourShader);
+        Model *mod = new Model("models/medo2.obj");
+        mod->setShader(ourShader);
+
+
+
+    Shader ourShader2("shaders/shader2.vert", "shaders/shader2.frag");
+    ourShader2.use();
+    Model *line = new Model();
+    line->setShader(ourShader2);
+
+    vector<glm::vec3> dots = {glm::vec3(1.0f),glm::vec3(2.0f),glm::vec3(3.0f),glm::vec3(5.0f),glm::vec3(0.0f,0.5f,-100.f) };
+    line->addDot(dots);
+
 
     while (!glfwWindowShouldClose(window -> window)){
         float currentFrame = glfwGetTime();
@@ -89,17 +99,23 @@ namespace logle{
     
         ourShader.use();
         mod->model = glm::rotate(mod->model, glm::radians(1.0f), glm::vec3(1.0, 0.0, 0.0));;  
-        ourShader.setVec3("viewPos", camera.Position);
-        ourShader.setMat4("model", transform);
-        ourShader.setMat4("transform", transform);
+            ourShader.setVec3("viewPos", camera.Position);
 
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-        ourShader.setMat4("projection", projection);
+            ourShader.setMat4("projection", projection);
 
         // camera/view transformation
         glm::mat4 view = camera.GetViewMatrix();
         ourShader.setMat4("view", view);
-        mod->Draw();
+        mod->Draw(GL_LINES);
+
+        ourShader2.use();
+        ourShader2.setMat4("view", view);
+        ourShader2.setMat4("projection", projection);
+        ourShader2.setVec3("color", glm::vec3(1.0f, 0.0f, 0.5f));
+
+        line->Draw(GL_LINE_STRIP);
+
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
         glfwSwapBuffers(window -> window);
