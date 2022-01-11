@@ -15,7 +15,7 @@ struct Vertex {
     // position
     glm::vec3 Position;
     // normal
-    glm::vec3 Normal;
+    glm::vec2 Tex;
     
 };
 
@@ -51,20 +51,40 @@ public:
     }
 
     void addDots(std::vector<glm::vec3> &v){
+        vector<glm::vec2> t = {
+              glm::vec2(1.0f, 1.0f),
+        glm::vec2(1.0f, -1.0f),
+        glm::vec2(-1.0f, -1.0f),  
+        glm::vec2( -1.0f, 1.0f)};
+
         for (int i = 0; i < (int)v.size(); i++){
+            
             Vertex dot{};
             dot.Position.x = v[i].x;
             dot.Position.y = v[i].y;
             dot.Position.z = v[i].z;
-            dot.Normal = glm::vec3(0);
+            dot.Tex.x = t[i].x;
+            dot.Tex.y = t[i].y;
+
+            //dot.Normal = glm::vec3(0);
 
             vertices.push_back(dot);
-            indices.push_back(i);
+            //indices.push_back(i);
         }
+       
+        indices.push_back(0);
+        indices.push_back(1);
+        indices.push_back(3);
+
+        indices.push_back(1);
+        indices.push_back(2);
+        indices.push_back(3);
 
         setupMesh();
     }
 
+
+ 
 
     // render data 
     unsigned int VBO, EBO;
@@ -91,10 +111,15 @@ public:
         // set the vertex attribute pointers
         // vertex Positions
         glEnableVertexAttribArray(0);	
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
         // vertex normals
         glEnableVertexAttribArray(1);	
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Tex));
+
+       
+        // vertex normals
+        // glEnableVertexAttribArray(1);	
+        // glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
         // vertex texture coords
 
         glBindVertexArray(0);

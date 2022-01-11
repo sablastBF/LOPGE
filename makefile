@@ -1,8 +1,8 @@
 CFLAGS = -std=c++17 -I. -I include
 LDFLAGS = -ldl -lglfw -lassimp
 
-a.out: shaders/* *.hpp *.c *.cpp 
-	g++ $(CFLAGS) -o a.out *.c *.cpp  $(LDFLAGS)
+a.out: shaders/* *.hpp *.c *.cpp *h
+	g++ $(CFLAGS) -o a.out *.c *.cpp  -I `pkg-config --cflags --libs opencv4` $(LDFLAGS)
 
 
 .PHONY: test clean
