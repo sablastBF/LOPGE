@@ -21,8 +21,8 @@ void main(){
     else           //Draw Labeling Map (Normal Voronoi Texture)
       fragColor = vec4(colorr, 1.0);
 
-    if(gl_FragDepth < 0.1*R && drawcenter) //Draw Centroids
-      fragColor = vec4(1.0);
+    if(gl_FragDepth < 0.001 && drawcenter) //Draw Centroids
+      fragColor = vec4(1.0, 0.0, 0.0,1.0);
 
 
     // vec2 cl = TexCoord + vec2(1.0);
